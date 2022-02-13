@@ -9,7 +9,6 @@ import (
 	"time"
 )
 
-var timesUpCh = make(chan struct{})
 var score int = 0
 
 func main() {
@@ -53,11 +52,9 @@ GameLoop:
 			fmt.Println("\nTIME'S UP!")
 			break GameLoop
 		}
-		close(answerCh)
 	}
 
 	fmt.Printf("You guessed right %d/%d answers.\n", score, problemsCount)
-	close(timesUpCh)
 }
 
 type Config struct {
