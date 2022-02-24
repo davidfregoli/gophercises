@@ -56,13 +56,5 @@ func YAMLHandler(yml []byte, fallback http.Handler) (http.HandlerFunc, error) {
 	for _, redirect := range data {
 		pathsToUrls[redirect.Path] = redirect.URL
 	}
-	return func(res http.ResponseWriter, req *http.Request) {
-		from := req.URL.String()
-		to, match := pathsToUrls[from]
-		if !match {
-			fallback.ServeHTTP(res, req)
-			return
-		}
-		http.Redirect(res, req, to, http.StatusTemporaryRedirect)
-	}, nil
+	return MapHandler(pathsToUrls, fallback), nil
 }
