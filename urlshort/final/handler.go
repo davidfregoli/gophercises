@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	bolt "go.etcd.io/bbolt"
 	"gopkg.in/yaml.v2"
 )
 
@@ -90,4 +91,25 @@ func JSONHandler(jsonData []byte, fallback http.Handler) (http.HandlerFunc, erro
 		pathsToUrls[redirect.Path] = redirect.URL
 	}
 	return MapHandler(pathsToUrls, fallback), nil
+}
+
+func BoltHandler(db *bolt.DB, fallback http.Handler) http.HandlerFunc {
+	return func(res http.ResponseWriter, req *http.Request) {
+		var to []byte
+		from := req.URL.String()
+		err := db.View((func(tx *bolt.Tx) error {
+			b := tx.Bucket([]byte("urls"))
+			to = b.Get([]byte(from))
+			return nil
+		}))
+		if err != nil {
+			panic(err)
+		}
+		if to == nil {
+			fallback.ServeHTTP(res, req)
+			return
+		}
+
+		http.Redirect(res, req, string(to), http.StatusTemporaryRedirect)
+	}
 }

@@ -7,7 +7,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/davidfregoli/gophercises/urlshort/final/urlshort"
+	urlshort "github.com/davidfregoli/gophercises/urlshort/final"
+	bolt "go.etcd.io/bbolt"
 )
 
 func main() {
@@ -15,6 +16,23 @@ func main() {
 	var json string
 	yamlPath := flag.String("yaml", "", "The path to the redirects YAML file.")
 	jsonPath := flag.String("json", "", "The path to the redirects JSON file.")
+
+	db, err := bolt.Open("redirects.db", 0600, nil)
+	if err != nil {
+		panic(err)
+	}
+	err = db.Update(func(tx *bolt.Tx) error {
+		b, err := tx.CreateBucketIfNotExists([]byte("urls"))
+		if err != nil {
+			return err
+		}
+		err = b.Put([]byte("/github"), []byte("https://www.github.com"))
+		return err
+	})
+	if err != nil {
+		panic(err)
+	}
+
 	flag.Parse()
 	mux := defaultMux()
 
@@ -73,8 +91,10 @@ func main() {
 		}
 	}
 
-	fmt.Println("Starting the server on :80")
-	http.ListenAndServe(":80", handler)
+	handler = urlshort.BoltHandler(db, handler)
+
+	fmt.Println("Starting the server on :8080")
+	http.ListenAndServe(":8080", handler)
 }
 
 func defaultMux() *http.ServeMux {
