@@ -17,7 +17,16 @@ func main() {
 	yamlPath := flag.String("yaml", "", "The path to the redirects YAML file.")
 	jsonPath := flag.String("json", "", "The path to the redirects JSON file.")
 
-	db, err := bolt.Open("redirects.db", 0600, nil)
+	f, err := ioutil.TempFile("", "urlshort_redirects_boltdb")
+	if err != nil {
+		panic(err)
+	}
+	err = f.Close()
+	if err != nil {
+		panic(err)
+	}
+	path := f.Name()
+	db, err := bolt.Open(path, 0600, nil)
 	if err != nil {
 		panic(err)
 	}
