@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-const problemsFile string = "/Users/david/code/go/src/github.com/davidfregoli/gophercises/quiz-game/mvp/problems.json"
+const problemsFile string = "./problems.json"
 
 var wg = sync.WaitGroup{}
 var timesUpCh = make(chan struct{})
