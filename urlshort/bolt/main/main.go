@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"os"
 
-	urlshort "github.com/davidfregoli/gophercises/urlshort/final"
+	urlshort "github.com/davidfregoli/gophercises/urlshort/bolt"
 	bolt "go.etcd.io/bbolt"
 )
 

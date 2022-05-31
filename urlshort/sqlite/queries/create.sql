@@ -7,6 +7,6 @@ CREATE TABLE `redirects` (
 );
 
 INSERT INTO `redirects` VALUES (
-  '/vods',
-  'https://www.youtube.com/playlist?list=PLFs19LVskfNzQLZkGG_zf6yfYTp_3v_e6'
+  '/amazon',
+  'https://www.amazon.it'
 );

@@ -1,4 +1,4 @@
-module github.com/davidfregoli/gophercises/urlshort/final
+module github.com/davidfregoli/gophercises/urlshort/bolt
 
 go 1.18
 
