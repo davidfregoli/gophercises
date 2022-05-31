@@ -1,0 +1,4 @@
+- path: /cnn
+  url: https://www.cnn.com
+- path: /nyt
+  url: https://www.nytimes.com/
