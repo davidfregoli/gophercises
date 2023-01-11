@@ -5,10 +5,11 @@
   <title>Choose Your Own Adventure</title>
   <style>
     body {
+      font-size: 22px;
       padding-top: 60px;
     }
     * {
-      max-width: 600px;
+      max-width: 1000px;
       margin: 0 auto 20px auto;
     }
   </style>
